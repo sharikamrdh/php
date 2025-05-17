@@ -1,36 +1,5 @@
 <?php
 session_start();
-require_once 'db.php';
-header('Content-Type: application/json');
-
-if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
-    $search = '%' . trim($_GET['q']) . '%';
-
-    try {
-        $stmt = $pdo->prepare("
-            SELECT id, title, auteur, genre, image_url 
-            FROM livres 
-            WHERE title LIKE :title 
-            OR auteur LIKE :auteur 
-            OR genre LIKE :genre
-        ");
-        $stmt->execute([
-            'title' => $search,
-            'auteur' => $search,
-            'genre' => $search
-        ]);
-
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($results);
-    } catch (PDOException $e) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Erreur serveur : ' . $e->getMessage()]);
-    }
-    exit;
-}
-
-// Si pas de requête AJAX, renvoyer le HTML
-header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -55,6 +24,8 @@ header('Content-Type: text/html; charset=UTF-8');
                 <?php if (!isset($_SESSION['user_id'])): ?>
                     <li><a href="login.html" class="login-btn">Sign In</a></li>
                     <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
+                <?php else: ?>
+                    <li><a href="logout.php">Logout</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -62,11 +33,12 @@ header('Content-Type: text/html; charset=UTF-8');
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="profile.php"><i class="fas fa-user" id="user-icon"></i></a>
             <?php else: ?>
-                <i class="fas fa-user"></i>
+                <a href="login.html"><i class="fas fa-user"></i></a>
             <?php endif; ?>
             <i class="fas fa-shopping-cart"></i>
         </div>
     </header>
+
     <main>
         <section class="search-section">
             <h1>Rechercher un livre</h1>
