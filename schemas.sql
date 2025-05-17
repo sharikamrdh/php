@@ -1,4 +1,4 @@
-CREATE DATABASE fable_db;
+CREATE DATABASE fable_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE fable_db;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -7,8 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS livres (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,12 +16,12 @@ CREATE TABLE IF NOT EXISTS livres (
     editeur VARCHAR(255) NOT NULL,
     date DATE,
     langue VARCHAR(255) NOT NULL,
-    genre VARCHAR(255) NOT NULL
-);
+    genre VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255) DEFAULT 'images/defaut.jpg',
+    description TEXT
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-ALTER TABLE livres
-ADD COLUMN image_url VARCHAR(255) DEFAULT 'images/defaut.jpg',
-ADD COLUMN description TEXT;
+CREATE INDEX idx_title ON livres (title);
 
 INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (1, 'La femme de menage', 'Mcfadden, Freida', 'J\'ai lu', '2023-10-04', 'Français', 'Thriller'),
@@ -62,7 +61,7 @@ INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (35, 'Le pays des autres t.1', 'Slimani, Leïla', 'Folio', '2021-05-06', 'Français', 'Roman'),
 (36, 'Mortelle Adèle ; Sur les traces du Croquepote', 'Mr Tan ; Le Feyer, Diane', 'Mr Tan and Co', '2024-10-17', 'Français', 'Bande dessinée'),
 (37, 'Dernière soirée', 'Gardner, Lisa', 'Albin Michel', '2025-01-02', 'Français', 'Policier'),
-(38, 'Après Dieu', 'Malka, Richard', 'Stock', '2025-01-08', 'Français', 'Essai'),
+(38, 'Après Dieu', 'Malka, Richard', 'Gallo', '2025-01-08', 'Français', 'Essai'),
 (39, 'Twisted tome 1 ; Twisted Love', 'Huang, Ana', 'Hugo Poche', '2025-01-02', 'Français', 'Romance'),
 (40, 'Le silence et la colère', 'Lemaitre, Pierre', 'Le livre de poche', '2024-04-24', 'Français', 'Roman'),
 (41, 'Changer l\'eau des fleurs', 'Perrin, Valérie', 'Le livre de poche', '2019-04-24', 'Français', 'Romance'),
@@ -202,7 +201,7 @@ INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (175, 'Le pouvoir du moment présent ; Guide d\'éveil spirituel', 'Tolle, Eckhart', 'J\'ai lu', '2010-08-28', 'Français', 'Essai'),
 (176, 'Anti-stress', 'Kostanek, Lidia', 'Hachette Pratique', '2019-01-23', 'Français', 'Activité'),
 (177, 'L\'atelier des sorciers - L\'art des sorciers', 'Shirahama, Kamome', 'Pika', '2025-01-29', 'Français', 'Manga'),
-(178, 'Il n\'a jamais été trop tard', 'Lafon, Lola', 'Stock', '2025-01-08', 'Français', 'Romance'),
+(178, 'Il n\'y a jamais été trop tard', 'Lafon, Lola', 'Stock', '2025-01-08', 'Français', 'Romance'),
 (179, 'Le petit prince', 'Saint-Exupéry, Antoine de', 'Folio', '1999-02-23', 'Français', 'Romance'),
 (180, 'Plus rien ne pourra me blesser : Maîtrisez votre esprit et défiez le destin', 'Goggins, David', 'Nimrod', '2023-09-28', 'Français', 'Essai'),
 (181, 'Mortelle Adèle t.14 ; Prout atomique', 'Mr Tan ; Le Feyer, Diane', 'Bayard Jeunesse', '2018-05-23', 'Français', 'Bande dessinée'),
