@@ -1,6 +1,9 @@
 <?php
+<<<<<<< HEAD
 session_start();
 var_dump($_SESSION);
+=======
+>>>>>>> cf525ef2f4ebaaebd76aaa323d5922c3aa303334
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -69,6 +72,7 @@ function genererCommentairesFictifs($n = 5) {
     return $comments;
 }
 
+<<<<<<< HEAD
 
 $commentaires = genererCommentairesFictifs();
 $statut_actuel = "Pile à lire";
@@ -85,12 +89,16 @@ if (isset($_SESSION['user_id'])) {
         }
     }
 }
+=======
+$commentaires = genererCommentairesFictifs(5);
+>>>>>>> cf525ef2f4ebaaebd76aaa323d5922c3aa303334
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title><?php echo htmlspecialchars($livre['title']); ?> | Fable</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -207,3 +215,39 @@ if (isset($_SESSION['user_id'])) {
 
 </body>
 </html>
+=======
+    <title><?= $livre ? htmlspecialchars($livre['title']) : 'Livre introuvable' ?></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<?php if ($livre): ?>
+    <div class="profile-section">
+        <div class="livre-card">
+            <img src="<?= htmlspecialchars($livre['image_url']) ?>" alt="<?= htmlspecialchars($livre['title']) ?>">
+            <div>
+                <h1><?= htmlspecialchars($livre['title']) ?></h1>
+                <p><strong>Auteur :</strong> <?= htmlspecialchars($livre['auteur']) ?></p>
+                <p><strong>Éditeur :</strong> <?= htmlspecialchars($livre['editeur']) ?></p>
+                <p><strong>Date :</strong> <?= htmlspecialchars($livre['date']) ?></p>
+                <p><strong>Langue :</strong> <?= htmlspecialchars($livre['langue']) ?></p>
+                <p><strong>Genre :</strong> <?= htmlspecialchars($livre['genre']) ?></p>
+                <p><strong>Description :</strong><br><?= nl2br(htmlspecialchars($livre['description'])) ?></p>
+            </div>
+        </div>
+        <hr>
+        <div class="commentaires">
+            <h2>Commentaires des lecteurs</h2>
+            <ul>
+                <?php foreach ($commentaires as $com): ?>
+                    <li><?= $com ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php else: ?>
+    <p style="text-align: center;">Aucun livre trouvé avec cet ID.</p>
+<?php endif; ?>
+</body>
+</html>
+
+>>>>>>> cf525ef2f4ebaaebd76aaa323d5922c3aa303334

@@ -94,7 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function afficherLivres(terme) {
+<<<<<<< HEAD
         fetch(`./api/search.php?q=${encodeURIComponent(terme)}`)
+=======
+        fetch(`api/search.php?q=${encodeURIComponent(terme)}`)
+>>>>>>> cf525ef2f4ebaaebd76aaa323d5922c3aa303334
             .then(res => res.json())
             .then(data => {
                 resultsDiv.innerHTML = "";
