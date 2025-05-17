@@ -1,3 +1,4 @@
+<!-- index.php -->
 <?php
 session_start();
 ?>
@@ -42,35 +43,20 @@ session_start();
                 <button>Get the app</button>
             </div>
             <div class="hero-image">
-                <img src="illustration.jpeg" alt="Illustration">
+                <img src="images/illustration.jpeg" alt="Illustration">
             </div>
         </section>
         <section class="book-list">
             <div class="scrolling">
-                <div class="book"><img src="book1.jpg" alt="Book 1"></div>
-                <div class="book"><img src="book2.jpg" alt="Book 2"></div>
-                <div class="book"><img src="book3.jpg" alt="Book 3"></div>
-                <div class="book"><img src="book4.jpg" alt="Book 4"></div>
-                <div class="book"><img src="book5.jpg" alt="Book 5"></div>
-                <div class="book"><img src="book6.jpg" alt="Book 6"></div>
-                <div class="book"><img src="book7.jpg" alt="Book 7"></div>
-                <div class="book"><img src="book8.jpg" alt="Book 8"></div>
-                <div class="book"><img src="book1.jpg" alt="Book 1"></div>
-                <div class="book"><img src="book2.jpg" alt="Book 2"></div>
-                <div class="book"><img src="book3.jpg" alt="Book 3"></div>
-                <div class="book"><img src="book4.jpg" alt="Book 4"></div>
-                <div class="book"><img src="book5.jpg" alt="Book 5"></div>
-                <div class="book"><img src="book6.jpg" alt="Book 6"></div>
-                <div class="book"><img src="book7.jpg" alt="Book 7"></div>
-                <div class="book"><img src="book8.jpg" alt="Book 8"></div>
+                <?php for ($i = 1; $i <= 8; $i++): ?>
+                    <div class="book"><img src="images/book<?= $i ?>.jpg" alt="Book <?= $i ?>"></div>
+                <?php endfor; ?>
             </div>
         </section>
         <section class="top-books">
             <h2>Top 3 par Genre</h2>
-            <!-- Existing genre sections remain unchanged -->
+            <!-- Sections de genres à ajouter -->
         </section>
     </main>
-    <script src="script.js" defer></script>
 </body>
 </html>
-
