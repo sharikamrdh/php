@@ -1,4 +1,6 @@
-/* ====== BASE ====== */
+
+/* ========== STYLES CSS DE BASE + AMÉLIORATIONS ESTHÉTIQUES ========== */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -13,6 +15,10 @@ header {
     align-items: center;
     padding: 20px;
     background: #f4ecd8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .logo {
@@ -21,7 +27,6 @@ header {
     color: #382110;
 }
 
-/* ====== NAVIGATION ====== */
 nav ul {
     list-style: none;
     display: flex;
@@ -34,9 +39,24 @@ nav ul li a {
     text-decoration: none;
     color: #382110;
     font-weight: bold;
+    position: relative;
 }
 
-/* ====== BOUTONS ====== */
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #382110;
+    transition: width 0.3s;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
 .login-btn, .signup-btn {
     background-color: #382110;
     color: #fff;
@@ -44,13 +64,13 @@ nav ul li a {
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .login-btn:hover, .signup-btn:hover {
     background-color: #5b3c1e;
 }
 
-/* ====== ICONES ====== */
 .icons {
     display: flex;
     align-items: center;
@@ -68,7 +88,6 @@ nav ul li a {
     color: #5b3c1e;
 }
 
-/* ====== HERO ====== */
 .hero {
     display: flex;
     justify-content: space-between;
@@ -102,10 +121,14 @@ nav ul li a {
     cursor: pointer;
     color: #fff;
     border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .hero button:hover {
     background-color: #5b3c1e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .hero-image img {
@@ -113,7 +136,6 @@ nav ul li a {
     border-radius: 10px;
 }
 
-/* ====== CARROUSEL LIVRES ====== */
 .book-list {
     overflow: hidden;
     width: 100%;
@@ -124,7 +146,7 @@ nav ul li a {
 
 .scrolling {
     display: flex;
-    animation: scroll interiorBooks 20s linear infinite;
+    animation: scrollBooks 20s linear infinite;
     width: max-content;
 }
 
@@ -150,7 +172,6 @@ nav ul li a {
     }
 }
 
-/* ====== FORM CONNEXION ====== */
 .auth-container {
     width: 400px;
     margin: 100px auto;
@@ -180,13 +201,16 @@ nav ul li a {
     cursor: pointer;
     border-radius: 5px;
     color: white;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .auth-container button:hover {
     background: #5b3c1e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-/* ====== PAGE RECHERCHE ====== */
 .search-section {
     text-align: center;
     padding: 50px;
@@ -228,115 +252,17 @@ nav ul li a {
     cursor: pointer;
     border-radius: 5px;
     color: white;
+    transition: all 0.3s ease-in-out;
 }
 
 .search-section button:hover {
     background: #5b3c1e;
+    transform: translateY(-2px);
 }
 
 #search-results {
     margin-top: 30px;
     text-align: left;
-}
-
-/* ====== CLUBS ====== */
-.club-banner {
-    text-align: center;
-    padding: 80px 20px;
-    background-color: #e9dbc3;
-}
-
-.club-banner h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
-    color: #382110;
-}
-
-.club-banner p {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #555;
-}
-
-.create-club-btn {
-    padding: 12px 25px;
-    background-color: #382110;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.create-club-btn:hover {
-    background-color: #5b3c1e;
-}
-
-.club-list {
-    padding: 60px 20px;
-}
-
-.club-list h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-    text-align: center;
-    color: #382110;
-}
-
-.club-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.club-card {
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-}
-
-.club-card:hover {
-    transform: scale(1.02);
-}
-
-.club-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.club-info {
-    padding: 20px;
-    color: #333;
-}
-
-.club-info h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.club-info p {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: #555;
-}
-
-.join-club-btn {
-    padding: 10px 20px;
-    background-color: #382110;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.join-club-btn:hover {
-    background-color: #5b3c1e;
 }
 
 .genre-buttons {
@@ -369,27 +295,42 @@ nav ul li a {
     font-weight: bold;
 }
 
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-in-delay-1 { animation-delay: 0.2s; }
+.fade-in-delay-2 { animation-delay: 0.4s; }
+.fade-in-delay-3 { animation-delay: 0.6s; }
+.fade-in-delay-4 { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.book-card,
+.club-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.book-card:hover,
+.club-card:hover {
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+    transform: scale(1.05);
+}
+
 .top-books {
     padding: 60px 20px;
-    background-color: #fdf6e3;
-}
-
-.top-books h2 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 40px;
-    color: #382110;
-}
-
-.genre-section {
-    margin-bottom: 50px;
-}
-
-.genre-section h3 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #5b3c1e;
-    text-align: center;
+    background: linear-gradient(to bottom, #fdf6e3 0%, #f4ecd8 100%);
 }
 
 .book-cards {
@@ -413,222 +354,12 @@ nav ul li a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.book-card:hover {
-    transform: scale(1.05);
-}
-
 .book-card p {
     font-size: 14px;
     margin-top: 10px;
     color: #382110;
 }
 
-/* Animation au scroll */
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.error {
-    color: #d9534f;
-    background-color: #f2dede;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-}
-
-.success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-}
-
-/* ====== RECHERCHE DES LIVRES ====== */
-#search-results .book-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-#search-results .book-card {
-    width: 180px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease;
-}
-
-#search-results .book-card:hover {
-    transform: scale(1.05);
-}
-
-#search-results .book-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-#search-results .book-info {
-    padding: 10px;
-    text-align: center;
-}
-
-#search-results .book-info p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #382110;
-}
-
-#search-results .description {
-    font-size: 12px;
-    color: #555;
-}
-
-/* ====== PAGE PROFIL ====== */
-.profile-section {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.profile-header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-}
-
-.profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 20px;
-}
-
-.profile-info h1 {
-    font-size: 28px;
-    color: #382110;
-    margin: 0;
-}
-
-.profile-info p {
-    font-size: 16px;
-    color: #555;
-}
-
-.profile-nav {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.profile-nav a {
-    text-decoration: none;
-    color: #382110;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.profile-nav a.active {
-    color: #c49b66;
-    border-bottom: 2px solid #c49b66;
-}
-
-.profile-content {
-    margin-top: 20px;
-}
-
-.book-shelf {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-}
-
-.book-shelf .book-card {
-    width: 100%;
-}
-
-.clubs-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.activity-feed {
-    border-left: 2px solid #eee;
-    padding-left: 20px;
-}
-
-.activity-feed .activity {
-    margin-bottom: 20px;
-}
-
-.activity-feed .activity p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #555;
-}
-
-.activity-feed .activity .date {
-    font-size: 12px;
-    color: #999;
-}
-
-.book-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-.book-card {
-    cursor: pointer;
-    transition: transform 0.2s;
-}
 .book-card:hover {
     transform: scale(1.05);
-}
-.livre-card {
-    display: flex;
-    gap: 20px;
-}
-.livre-card img {
-    max-width: 200px;
-}
-
-.livre-card {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-}
-.livre-card img {
-    max-width: 200px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-.livre-card h1 {
-    color: #382110;
-    font-size: 32px;
-}
-.livre-card p {
-    font-size: 16px;
-    margin: 5px 0;
-}
-.livre-card ul {
-    padding-left: 20px;
 }
