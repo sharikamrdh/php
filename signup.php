@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlspecialchars(trim($_POST['email']));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Vérifie si l'email existe déjà
     $check = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $check->execute([$email]);
 
@@ -29,4 +28,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
