@@ -54,6 +54,116 @@ SET resume = "Sarah, une aide-ménagère méticuleuse et solitaire, découvre un
     auteur_bio = "Freida McFadden est médecin et autrice de thrillers psychologiques à succès. Elle est connue pour ses récits haletants mêlant mystères et émotions, traduits dans plusieurs langues."
 WHERE title = "La femme de ménage";
 
+SELECT DISTINCT statut FROM statuts_lecture;
+
+CREATE TABLE bookclubs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    livre_id INT NOT NULL,
+    club_nom VARCHAR(255),
+    moderateur_id INT,
+    FOREIGN KEY (livre_id) REFERENCES livres(id),
+    FOREIGN KEY (moderateur_id) REFERENCES users(id)
+);
+
+CREATE TABLE bookclub_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    livre_id INT NOT NULL,
+    date_joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
+
+SELECT DISTINCT genre FROM livres;
+
+CREATE TABLE messages_club (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    livre_id INT NOT NULL,
+    message TEXT NOT NULL,
+    date_message TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
+
+INSERT INTO messages_club (user_id, livre_id, message, date_message)
+VALUES (1, 3, 'Ce passage m’a vraiment bouleversé, surtout la scène avec la lettre.', '2025-05-18 11:02:49');
+
+CREATE TABLE commentaires (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    livre_id INT NOT NULL,
+    commentaire TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY (user_id, livre_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (livre_id) REFERENCES livres(id) ON DELETE CASCADE
+);
+
+INSERT INTO statuts_lecture (user_id, livre_id, statut)
+VALUES (1, 1, 'Lu');
+
+-- 🎯 TABLE DE PROGRESSION DE LECTURE
+CREATE TABLE IF NOT EXISTS progression_lecture (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    livre_id INT NOT NULL,
+    pages_lues INT DEFAULT 0,
+    pourcentage DECIMAL(5,2) DEFAULT 0.00,
+    date_mise_a_jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (livre_id) REFERENCES livres(id) ON DELETE CASCADE
+);
+
+
+-- 🎯 OBJECTIFS DE LECTURE
+CREATE TABLE IF NOT EXISTS objectifs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    annee INT NOT NULL,
+    nb_livres_objectif INT,
+    genres_pref TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 🏆 STATISTIQUES MENSUELLES
+CREATE TABLE IF NOT EXISTS stats_mensuelles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mois YEAR,
+    annee INT,
+    livre_id INT,
+    nb_lectures INT DEFAULT 0,
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
+
+-- 🏅 BEST-SELLER ANNUEL
+CREATE TABLE IF NOT EXISTS bestseller_annuel (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    annee INT,
+    livre_id INT,
+    nb_lectures INT,
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
+
+-- 📋 LISTES DE LECTURE PARTAGÉES
+CREATE TABLE IF NOT EXISTS listes_partagees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom_liste VARCHAR(255),
+    description TEXT,
+    createur_id INT,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (createur_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS livres_dans_liste (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    liste_id INT,
+    livre_id INT,
+    FOREIGN KEY (liste_id) REFERENCES listes_partagees(id) ON DELETE CASCADE,
+    FOREIGN KEY (livre_id) REFERENCES livres(id) ON DELETE CASCADE
+);
+
 
 INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (1, 'La femme de menage', 'Mcfadden, Freida', 'J\'ai lu', '2023-10-04', 'Français', 'Thriller'),
@@ -256,3 +366,4 @@ INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (198, 'Les petits Marabout ; Airfryer : Recettes express ; 70 recettes testées pour vous !', 'Collectif', 'Marabout', '2025-01-02', 'Français', 'Cuisine');
 
 UPDATE livres SET image_url = 'images/femme de menage.jpg' WHERE id = 1;
+

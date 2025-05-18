@@ -13,37 +13,26 @@ session_start();
     <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="logo">Fable</div>
-        <nav>
-            <ul>
-                <li><a href="club.php">Clubs</a></li>
-                <li><a href="search.php">Recherche</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">For Business</a></li>
-                <li><a href="#">For Education</a></li>
-                <?php if (!isset($_SESSION['user_id'])): ?>
-                    <li><a href="login.html" class="login-btn">Sign In</a></li>
-                    <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-        <div class="icons">
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="profile.php"><i class="fas fa-user" id="user-icon"></i></a>
-            <?php endif; ?>
-        </div>
-    </header>
+    <?php include 'header.php'; ?>
+
     <main>
         <section class="hero">
             <div class="hero-text">
                 <h2>WELCOME HOME</h2>
-                <h1>Bookworms and binge-watchers</h1>
-                <p>Join a community of good people to discuss great stories on Fable.</p>
-                <button>Get the app</button>
+                <h1>Bookworms and Book club</h1>
+                <p>Rejoins la communauté pour discuter des livres!</p>
             </div>
             <div class="hero-image">
-                <img src="images/illustration.jpeg" alt="Illustration">
+                <style>
+                    .fondu {
+                    width: 100%;
+                    height: auto;
+                    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                    }
+                    </style>
+
+                    <img src="images/illustration.jpeg" alt="Illustration" class="fondu">
             </div>
         </section>
         <section class="book-list">

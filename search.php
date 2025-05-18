@@ -11,33 +11,7 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Fable</div>
-        <nav>
-            <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="search.php">Recherche</a></li>
-                <li><a href="club.php">Clubs</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">For Business</a></li>
-                <li><a href="#">For Education</a></li>
-                <?php if (!isset($_SESSION['user_id'])): ?>
-                    <li><a href="login.html" class="login-btn">Sign In</a></li>
-                    <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
-                <?php else: ?>
-                    <li><a href="logout.php">Logout</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-        <div class="icons">
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="profile.php"><i class="fas fa-user" id="user-icon"></i></a>
-            <?php else: ?>
-                <a href="login.html"><i class="fas fa-user"></i></a>
-            <?php endif; ?>
-            <i class="fas fa-shopping-cart"></i>
-        </div>
-    </header>
+    <?php include 'header.php'; ?>
 
     <main>
         <section class="search-section">
