@@ -10,6 +10,8 @@ if ($id === 0) {
     echo "ID du livre manquant.";
     exit;
 }
+require 'db.php';
+echo "<!-- DB = " . $pdo->query("SELECT DATABASE()")->fetchColumn() . " -->";
 
 $stmt = $pdo->prepare("SELECT * FROM livres WHERE id = ?");
 $stmt->execute([$id]);
@@ -91,47 +93,108 @@ $commentaires = genererCommentairesFictifs();
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($livre['title']) ?> | Fable</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .btn-noter {
+        display: inline-block;
+        padding: 10px 18px;
+        background-color: #382110;
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        }
+        .btn-noter:hover {
+        background-color: #6b4e3d;
+        }
+    </style>
+
 </head>
 <body>
 <?php include 'header.php'; ?>
 
-<main style="padding: 40px; max-width: 1000px; margin: auto; display: flex; gap: 40px;">
-    <div style="flex-shrink: 0;">
-        <img src="<?= htmlspecialchars($livre['image_url']) ?>" alt="Couverture du livre"
-             style="width: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-    </div>
-    <div style="flex-grow: 1;">
-        <h1 style="font-size: 32px; margin-bottom: 10px;"><?= htmlspecialchars($livre['title']) ?></h1>
-        <p style="font-style: italic; color: #555;">par <?= htmlspecialchars($livre['auteur']) ?></p>
-        <p style="margin-top: 10px; font-size: 18px;">
-            <strong>Note globale :</strong> 4.2 / 5 <i class="fas fa-star" style="color: #c49b66;"></i>
-        </p>
+<main class="book-page container">
+   <!-- COUVERTURE ------------------------------------ -->
+   <div class="cover-col">
+      <img src="<?= htmlspecialchars($livre['image_url']) ?>"
+           alt="Couverture de <?= htmlspecialchars($livre['title']) ?>"
+           class="book-cover">
+   </div>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <div class="statut-form">
-                <label for="statut">Statut de lecture :</label>
-                <select id="statut" onchange="mettreAJourStatut(this.value)">
-                    <option value="Pile à lire" <?php if ($statut_actuel == "Pile à lire") echo "selected"; ?>>Pile à lire</option>
-                    <option value="En cours" <?php if ($statut_actuel == "En cours") echo "selected"; ?>>En cours</option>
-                    <option value="Lu" <?php if ($statut_actuel == "Lu") echo "selected"; ?>>Lu</option>
-                </select>
-                <p id="message-statut" class="statut-actuel"></p>
-            </div>
-        <?php else: ?>
-            <p class="statut-actuel">Connectez-vous pour suivre votre lecture.</p>
+   <!-- INFOS + ACTIONS -------------------------------- -->
+   <div class="info-col">
+      <h1 class="book-title"><?= htmlspecialchars($livre['title']) ?></h1>
+      <p class="book-author">par <?= htmlspecialchars($livre['auteur']) ?></p>
+
+      <!-- Note globale simulée -->
+      <div class="rating-summary">
+         <span class="avg-rating">4,2</span>
+         <span class="stars">★★★★☆</span>
+         <span class="rating-count">· 1 024 notes</span>
+      </div>
+
+      <!-- STATUT DE LECTURE (mêmes valeurs que la BDD) -->
+      <?php if (isset($_SESSION['user_id'])): ?>
+      <div class="read-actions">
+         <label for="statut">Mon statut :</label>
+         <select id="statut" onchange="mettreAJourStatut(this.value)">
+            <?php foreach (['Pile à lire','En cours','Lu'] as $s): ?>
+               <option value="<?= $s ?>" <?= $statut_actuel===$s?'selected':'' ?>>
+                  <?= $s ?>
+               </option>
+            <?php endforeach; ?>
+         </select>
+         <?php if ($statut_actuel === 'Lu'): ?>
+        <div class="rate-book" style="margin-top: 20px;">
+            <a href="noter_livre.php?id=<?= $livre['id'] ?>" class="btn-noter">
+            ⭐ Noter ce livre
+            </a>
+        </div>
         <?php endif; ?>
 
-        <h2 style="margin-top: 30px; font-size: 24px;">Résumé</h2>
-        <p style="line-height: 1.6;">
-            <?= isset($livre['resume']) ? htmlspecialchars($livre['resume']) : "Résumé indisponible." ?>
-        </p>
+         <span id="message-statut" class="flash-msg"></span>
+      </div>
+      <?php else: ?>
+         <p class="login-reminder">
+            <a href="login.html">Connectez-vous</a> pour enregistrer votre progression.
+         </p>
+      <?php endif; ?>
 
-        <h2 style="margin-top: 30px; font-size: 24px;">A propos de l'auteur</h2>
-        <p style="line-height: 1.6;">
-            <?= isset($livre['auteur_bio']) ? htmlspecialchars($livre['auteur_bio']) : "Biographie non disponible." ?>
-        </p>
-    </div>
+      <!-- ONGLET RÉSUMÉ -------------------------------- -->
+      <section class="book-section">
+         <h2>Résumé</h2>
+         <p><?= htmlspecialchars($livre['resume'] ?? 'Résumé indisponible.') ?></p>
+      </section>
+
+      <!-- ONGLET AUTEUR -------------------------------- -->
+      <section class="book-section">
+         <h2>À propos de l’autrice / de l’auteur</h2>
+         <p><?= htmlspecialchars($livre['auteur_bio'] ?? 'Biographie non disponible.') ?></p>
+      </section>
+   </div>
 </main>
+
+<!-- COMMENTAIRES ------------------------------------- -->
+<section class="comments container">
+   <h2>Commentaires des lecteurs</h2>
+   <?php foreach ($commentaires as $c): ?>
+      <article class="comment"><?= $c ?></article>
+   <?php endforeach; ?>
+</section>
+
+<!-- JS identique (on ne touche qu’au visuel) --------- -->
+<script>
+function mettreAJourStatut(s){
+   const xhr = new XMLHttpRequest();
+   xhr.open('POST','mettre_a_jour_statut.php',true);
+   xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+   xhr.onload=function(){
+      if(xhr.status===200) document.getElementById('message-statut').textContent='✓ enregistré';
+   };
+   xhr.send(`livre_id=<?= $livre['id'] ?>&statut=${encodeURIComponent(s)}`);
+}
+</script>
+
 
 <section style="max-width: 1000px; margin: 50px auto;">
     <h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Commentaires des lecteurs</h2>
@@ -146,18 +209,48 @@ $commentaires = genererCommentairesFictifs();
 </section>
 
 <script>
-    function mettreAJourStatut(statut) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "mettre_a_jour_statut.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById("message-statut").innerText = "Statut mis à jour !";
-                location.reload();
+function mettreAJourStatut(statut) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "mettre_a_jour_statut.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("message-statut").innerText = "Statut mis à jour !";
+            if (statut === 'En cours') {
+                document.getElementById("lecture-progress").style.display = "block";
+            } else {
+                document.getElementById("lecture-progress").style.display = "none";
             }
-        };
-        xhr.send("livre_id=<?= $livre['id'] ?>&user_id=<?= $_SESSION['user_id'] ?? 0 ?>&statut=" + encodeURIComponent(statut));
+            location.reload();
+        }
+    };
+    xhr.send("livre_id=<?= $livre['id'] ?>&statut=" + encodeURIComponent(statut));
+}
+
+// Afficher ou non le champ selon le statut au chargement
+document.addEventListener('DOMContentLoaded', function () {
+    const statutSelect = document.getElementById('statut');
+    if (statutSelect && statutSelect.value === 'En cours') {
+        document.getElementById("lecture-progress").style.display = "block";
     }
+});
+
+function mettreAJourSuivi() {
+    const page = document.getElementById("page_actuelle").value.trim();
+    if (!page) return;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "mettre_a_jour_suivi.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            document.getElementById("msg-suivi").innerText = "Progression enregistrée ✅";
+        }
+    };
+    xhr.send("livre_id=<?= $livre['id'] ?>&progression=" + encodeURIComponent(page));
+}
 </script>
+
 </body>
 </html>
+

@@ -164,6 +164,17 @@ CREATE TABLE IF NOT EXISTS livres_dans_liste (
     FOREIGN KEY (livre_id) REFERENCES livres(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS suivi_lecture (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    livre_id INT NOT NULL,
+    progression VARCHAR(50),
+    date_update DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, livre_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
+
 
 INSERT INTO livres (id, title, auteur, editeur, date, langue, genre) VALUES
 (1, 'La femme de menage', 'Mcfadden, Freida', 'J\'ai lu', '2023-10-04', 'Français', 'Thriller'),

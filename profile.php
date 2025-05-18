@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db.php';
+echo "<!-- DB = " . $pdo->query("SELECT DATABASE()")->fetchColumn() . " -->";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html?error=Connexion requise");
@@ -37,7 +38,7 @@ $stmt_obj = $pdo->prepare("SELECT nb_livres_objectif FROM objectifs WHERE user_i
 $stmt_obj->execute([$user_id, $annee]);
 $objectif = $stmt_obj->fetchColumn();
 
-$stmt_lus = $pdo->prepare("SELECT COUNT(*) FROM statuts_lecture WHERE user_id = ? AND statut = 'lu'");
+$stmt_lus = $pdo->prepare("SELECT COUNT(*) FROM statuts_lecture WHERE user_id = ? AND statut = 'Lu'");
 $stmt_lus->execute([$user_id]);
 $lus = $stmt_lus->fetchColumn();
 $progression = ($objectif && $objectif > 0) ? min(100, round($lus / $objectif * 100)) : 0;
